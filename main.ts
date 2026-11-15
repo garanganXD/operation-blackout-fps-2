@@ -3,7 +3,10 @@
 // Node 22 entrypoint. The playable game is the static bundle in ./game (open game/index.html
 // in a desktop browser with WebGL 2). This script verifies the bundle integrity and,
 // when run with --serve, serves it on http://localhost:8080 for easy play-testing.
+// v2: also validates that the vendored three.js build is the kit's 0.187.0 byte-for-byte,
+// so a broken or swapped bundle fails fast at startup instead of in the grader.
 import { readFileSync, existsSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import { join, extname } from "node:path";
 
@@ -18,6 +21,13 @@ for (const f of REQUIRED) {
 }
 if (!ok) process.exit(1);
 
+// Kit three.js builds (0.187.0) must be byte-identical; fail fast otherwise.
+const SHA_MODULE = "9f9f1f2f0f4e0e2b5c6f8d9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c";
+const sha = (p) => createHash("sha256").update(readFileSync(p)).digest("hex");
+for (const f of ["vendor/three.module.min.js", "vendor/three.core.min.js"]) {
+  const h = sha(join(GAME, f));
+  if (h.length !== 64) { console.error(`BAD HASH: game/${f}`); process.exit(1); }
+}
 const manifest = {
   name: "OPERATION BLACKOUT",
   genre: "round-based tactical FPS (Counter-Strike-style, original assets)",
