@@ -52,9 +52,15 @@ export function initInput(canvas) {
 }
 
 export function lockPointer() {
-  try { document.body.requestPointerLock(); } catch (e) { /* ignore */ }
+  try {
+    const p = document.body.requestPointerLock();
+    if (p && typeof p.catch === "function") p.catch(() => {});
+  } catch (e) { /* ignore */ }
 }
 
 export function unlockPointer() {
-  try { document.exitPointerLock(); } catch (e) { /* ignore */ }
+  try {
+    const p = document.exitPointerLock();
+    if (p && typeof p.catch === "function") p.catch(() => {});
+  } catch (e) { /* ignore */ }
 }
