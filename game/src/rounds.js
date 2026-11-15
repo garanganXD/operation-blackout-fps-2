@@ -23,9 +23,9 @@ export function startMatch() {
 
 export function startRound() {
   S.round++;
+  clearTransients();
   spawnPlayer();
   spawnBots();
-  clearTransients();
 
   // Reset the objective.
   S.bomb = "carried";

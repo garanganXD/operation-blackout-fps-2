@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OPERATION BLACKOUT</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#0a0d12;font-family:'Courier New',monospace}
+  canvas{display:block}
+  #hud{position:fixed;inset:0;pointer-events:none;color:#e8e6e3;text-shadow:0 0 4px #000}
+
+  #crosshair{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%)}
+
+  #bottom{position:fixed;left:20px;bottom:16px;font-size:20px}
+  #hpbarwrap{position:fixed;left:20px;bottom:46px;width:180px;height:8px;background:rgba(0,0,0,.5)}
+  #hpbar{height:100%;width:100%;background:#3a8f4a;transition:width .1s}
+  #weapon{position:fixed;left:20px;bottom:62px;font-size:15px;color:#8a929c}
+  #nades{position:fixed;left:20px;bottom:80px;font-size:15px;color:#c9a227}
+
+  #ammo{position:fixed;right:24px;bottom:16px;font-size:34px;font-weight:bold}
+  #money{position:fixed;right:24px;bottom:60px;font-size:20px;color:#8fce6f}
+
+  #timer{position:fixed;top:12px;left:50%;transform:translateX(-50%);font-size:26px}
+  #score{position:fixed;top:44px;left:50%;transform:translateX(-50%);font-size:18px}
+  #round{position:fixed;top:12px;left:20px;font-size:20px}
+  #objective{position:fixed;top:12px;right:20px;font-size:16px;color:#7fd88f;text-align:right}
+
+  #progbars{position:fixed;top:84px;left:50%;transform:translateX(-50%);width:220px}
+  .pbar{width:100%;height:6px;background:rgba(0,0,0,.5);margin:4px 0}
+  #plantbar{height:100%;width:0;background:#7fd88f}
+  #defusebar{height:100%;width:0;background:#d84a3a}
+
+  #msg{position:fixed;top:35%;left:50%;transform:translateX(-50%);font-size:30px;font-weight:bold;color:#d8b24a;text-align:center}
+
+  #buy{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(10,13,18,.92);
+       border:1px solid #3a8f4a;padding:24px 32px;font-size:17px;line-height:2;pointer-events:auto;display:none}
+  #buy h2{margin:0 0 8px;color:#7fd88f;font-size:22px}
+  #buy .row{cursor:pointer}
+  #buy .row:hover{color:#7fd88f}
+  #buy .hint{margin-top:10px;color:#8a929c;font-size:14px}
+
+  #damage{position:fixed;inset:0;pointer-events:none;opacity:0;
+          background:radial-gradient(ellipse at center,transparent 40%,rgba(200,30,30,.9) 100%)}
+</style>
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.min.js"}}
+</script>
+</head>
+<body>
+<div id="hud">
+  <svg id="crosshair" width="40" height="40">
+    <line id="ch-t" x1="20" y1="6" x2="20" y2="14" stroke="#cfe8d0" stroke-width="2"/>
+    <line id="ch-b" x1="20" y1="34" x2="20" y2="26" stroke="#cfe8d0" stroke-width="2"/>
+    <line id="ch-l" x1="6" y1="20" x2="14" y2="20" stroke="#cfe8d0" stroke-width="2"/>
+    <line id="ch-r" x1="34" y1="20" x2="26" y2="20" stroke="#cfe8d0" stroke-width="2"/>
+  </svg>
+
+  <div id="round">ROUND 1</div>
+  <div id="timer">1:55</div>
+  <div id="score">RAIDERS 0 — 0 WARDENS</div>
+  <div id="objective">PLANT THE BOMB AT SITE A</div>
+
+  <div id="progbars">
+    <div class="pbar"><div id="plantbar"></div></div>
+    <div class="pbar"><div id="defusebar"></div></div>
+  </div>
+
+  <div id="bottom">HP <span id="hp">100</span></div>
+  <div id="hpbarwrap"><div id="hpbar"></div></div>
+  <div id="weapon">MANTIS</div>
+  <div id="nades">SHARD x0</div>
+  <div id="money">$ 800</div>
+  <div id="ammo">12 / 48</div>
+  <div id="msg"></div>
+
+  <div id="buy">
+    <h2>BUY MENU — press number or click</h2>
+    <div class="row" data-i="1">[1] FALCON — rifle ......... $2700</div>
+    <div class="row" data-i="2">[2] WASP — smg ............ $1200</div>
+    <div class="row" data-i="3">[3] NIGHTWING — sniper .... $4750</div>
+    <div class="row" data-i="4">[4] KEVLAR VEST .......... $650</div>
+    <div class="row" data-i="5">[5] SHARD — frag grenade .. $300</div>
+    <div class="hint">[B] start round &nbsp; [E] plant &nbsp; [R] reload &nbsp; [G] grenade &nbsp; [1-4] switch</div>
+  </div>
+</div>
+<div id="damage"></div>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
