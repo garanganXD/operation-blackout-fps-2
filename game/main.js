@@ -85,6 +85,12 @@ function render() {
   }
   viewmodel.update(FIXED);
   hud.update();
+
+  // Steady-aim narrows the field of view slightly (smooth zoom).
+  const targetFov = S.focus && S.phase === "live" ? 55 : 75;
+  camera.fov += (targetFov - camera.fov) * 0.18;
+  camera.updateProjectionMatrix();
+
   renderer.render(scene, camera);
 }
 

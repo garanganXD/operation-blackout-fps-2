@@ -60,6 +60,7 @@ export const S = {
   flash: 0,           // muzzle light intensity, decays
   moving: 0,          // 0..1 movement amount for bob/spread
   damageFlash: 0,     // red screen vignette when the player is hurt
+  focus: false,       // right-mouse "steady aim" (tighter spread, slight zoom)
 
   // Messaging & sound.
   msg: "",

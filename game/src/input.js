@@ -8,6 +8,7 @@ export const input = {
   mouseDY: 0,
   firing: false,
   clicked: false,     // edge-triggered click on the canvas (start round / restart)
+  focus: false,       // right-mouse held (steady aim)
   locked: false,
   down(code) { return this.keys.has(code); },
   hit(code) { return this.pressed.has(code); },
@@ -36,11 +37,15 @@ export function initInput(canvas) {
     if (e.button === 0) {
       input.firing = true;
       if (e.target === canvas) input.clicked = true;
+    } else if (e.button === 2) {
+      input.focus = true;
     }
   });
   document.addEventListener("mouseup", (e) => {
     if (e.button === 0) input.firing = false;
+    else if (e.button === 2) input.focus = false;
   });
+  document.addEventListener("contextmenu", (e) => e.preventDefault());
   document.addEventListener("pointerlockchange", () => {
     input.locked = document.pointerLockElement === canvas;
   });

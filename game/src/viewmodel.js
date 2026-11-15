@@ -64,10 +64,11 @@ export function update(dt) {
   accentMat.color.set(ACCENT[S.weapon] ?? 0x8a8a8a);
 
   const reloadTilt = S.reloading ? 0.6 : 0;
-  const bob = S.moving;
+  const ads = S.focus && S.phase === "live" ? 1 : 0;
+  const bob = S.moving * (1 - ads * 0.7);
 
-  group.position.x = BASE.x + Math.cos(S.time * 5.5) * 0.004 * bob;
-  group.position.y = BASE.y + Math.sin(S.time * 11) * 0.006 * bob;
+  group.position.x = BASE.x + (ads ? -BASE.x * 0.8 : 0) + Math.cos(S.time * 5.5) * 0.004 * bob;
+  group.position.y = BASE.y + (ads ? 0.08 : 0) + Math.sin(S.time * 11) * 0.006 * bob;
   group.position.z = BASE.z + S.recoil * 0.5 + reloadTilt * 0.08;
   group.rotation.x = S.recoil * 4 + reloadTilt;
 }

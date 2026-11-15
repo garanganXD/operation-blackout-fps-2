@@ -26,6 +26,7 @@ export function update(dt) {
   }
   if (input.hit("KeyR")) startReload();
   if (input.hit("KeyG")) throwGrenade();
+  S.focus = input.focus;
 
   // Sustained-fire recoil decays over time.
   S.heat = Math.max(0, S.heat - dt * 1.6);
@@ -111,9 +112,9 @@ function tryFire() {
   // Bots hear the shot.
   S.lastNoise = { x: p.x, z: p.z, t: S.time, loud: 34 };
 
-  // Spread: base × movement × crouch × sustained-fire heat.
+  // Spread: base × movement × crouch × steady-aim × sustained-fire heat.
   const moving = S.moving > 0.3;
-  const spread = w.spread * (moving ? 2.4 : 1) * (p.crouch ? 0.6 : 1) * (1 + S.heat * 1.5);
+  const spread = w.spread * (moving ? 2.4 : 1) * (p.crouch ? 0.6 : 1) * (input.focus ? 0.5 : 1) * (1 + S.heat * 1.5);
 
   // Trace the bullet from the eye.
   _origin.set(p.x, eyeHeight(p), p.z);
